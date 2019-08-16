@@ -3,7 +3,7 @@ module.exports = {
   host: 'localhost',
   username: 'postgres',
   password: '1112',
-  database: 'animeflix_com_br',
+  database: 'animeflix',
   define: {
     timestamps: true,
     underscored: true,
