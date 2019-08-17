@@ -1,39 +1,51 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('seasons', {
+    return queryInterface.createTable('episodes', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        unique: true,
+        autoIncrement: true,
       },
       air_date: {
         type: Sequelize.DATE,
-        allowNUll: true,
+        allowNull: true,
       },
-      episode_count: {
+      episode_number: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
-        allowNUll: false,
+        allowNull: false,
       },
       overview: {
         type: Sequelize.TEXT,
-        allowNUll: true,
-      },
-      poster_path: {
-        type: Sequelize.STRING,
-        allowNUll: false,
+        allowNull: true,
       },
       season_number: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: false,
+      },
+      still_path: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      vote_average: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
+      vote_count: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       id_themoviedb: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: false,
+      },
+      url: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -47,6 +59,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('seasons');
+    return queryInterface.dropTable('episodes');
   },
 };

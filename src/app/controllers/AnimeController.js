@@ -1,0 +1,93 @@
+import axios from 'axios';
+import Anime from '../models/Anime';
+import Episodes from '../models/Episodes';
+import Season from '../models/Season';
+
+const keyThemovieDb = 'a90f0a1ea3df4d0b84213fc1170f6e81';
+const language = 'pt-br';
+
+class AnimeController {
+  async store(req, res) {
+    console.log(req.body);
+    const { id_anime, pathAnitube } = req.body;
+    axios
+      .get(
+        `https://api.themoviedb.org/3/tv/${id_anime}?api_key=${keyThemovieDb}&language=${language}&include_image_language=${language}`
+      )
+      .then(async result => {
+        // SALVANDO ANIME
+
+        const animeExists = await Anime.findOne({ where: { id: id_anime } });
+
+        if (!animeExists) {
+          await Anime.create({
+            id: result.data.id,
+            name: result.data.name,
+            overview: result.data.overview,
+            popularity: result.data.popularity,
+            poster_path: result.data.poster_path,
+            backdrop_path: result.data.backdrop_path,
+            number_of_episodes: result.data.number_of_episodes,
+            number_of_seasons: result.data.number_of_seasons,
+            vote_average: result.data.vote_average,
+            vote_count: result.data.vote_count,
+            id_themoviedb: id_anime,
+          });
+        }
+
+        // SALVANDO TEMPORADAS
+        const { seasons } = result.data;
+
+        await seasons.map(async obj => {
+          const epExists = await Season.findOne({ where: { id: obj.id } });
+          if (!epExists) {
+            await Season.create({
+              id: obj.id,
+              air_date: obj.air_date,
+              episode_count: obj.episode_count,
+              name: obj.name,
+              overview: obj.overview,
+              poster_path: obj.poster_path,
+              season_number: obj.season_number,
+              id_themoviedb: id_anime,
+              id_season: obj.id,
+            });
+          }
+
+          // SALVANDO EPISODIOS
+          if (obj.season_number > 0) {
+            await axios
+              .get(
+                `https://api.themoviedb.org/3/tv/${id_anime}/season/${obj.season_number}?api_key=${keyThemovieDb}&language=${language}&include_image_language=${language}`
+              )
+              .then(async epsAll => {
+                const { episodes } = epsAll.data;
+                await episodes.map(async eps => {
+                  const episode_number =
+                    eps.episode_number < 10
+                      ? `0${eps.episode_number.toString()}`
+                      : eps.episode_number.toString();
+                  await Episodes.create({
+                    id: eps.id,
+                    air_date: eps.air_date,
+                    episode_number,
+                    name: eps.name,
+                    overview: eps.overview,
+                    season_number: eps.season_number,
+                    still_path: eps.still_path,
+                    vote_average: eps.vote_average,
+                    vote_count: eps.vote_count,
+                    id_themoviedb: id_anime,
+                    url: `${pathAnitube}/${episode_number}.MP4`,
+                  });
+                });
+              });
+          }
+        });
+
+        return res.status(200).json({ message: 'anime created' });
+      });
+  }
+}
+
+module.exports = new AnimeController();
