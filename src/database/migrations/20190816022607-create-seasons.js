@@ -3,45 +3,45 @@ module.exports = {
     return queryInterface.createTable('seasons', {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         primaryKey: true,
         unique: true,
       },
       air_date: {
         type: Sequelize.DATE,
-        allowNUll: true,
+        allowNull: true,
       },
       episode_count: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNUll: false,
+        allowNull: true,
       },
       overview: {
         type: Sequelize.TEXT,
-        allowNUll: true,
+        allowNull: true,
       },
       poster_path: {
         type: Sequelize.STRING,
-        allowNUll: false,
+        allowNull: true,
       },
       season_number: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: true,
       },
       id_themoviedb: {
         type: Sequelize.INTEGER,
-        allowNUll: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
     });
   },

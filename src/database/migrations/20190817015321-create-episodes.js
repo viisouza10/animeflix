@@ -3,7 +3,7 @@ module.exports = {
     return queryInterface.createTable('episodes', {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -13,11 +13,11 @@ module.exports = {
       },
       episode_number: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       overview: {
         type: Sequelize.TEXT,
@@ -25,11 +25,11 @@ module.exports = {
       },
       season_number: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       still_path: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       vote_average: {
         type: Sequelize.FLOAT,
@@ -41,19 +41,19 @@ module.exports = {
       },
       id_themoviedb: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       url: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
     });
   },

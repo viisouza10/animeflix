@@ -4,6 +4,7 @@ module.exports = {
   username: 'postgres',
   password: '1112',
   database: 'animeflix',
+  logging: false,
   define: {
     timestamps: true,
     underscored: true,

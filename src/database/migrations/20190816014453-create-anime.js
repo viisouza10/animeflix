@@ -3,57 +3,57 @@ module.exports = {
     return queryInterface.createTable('animes', {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         primaryKey: true,
         autoIncrement: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       overview: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       popularity: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
       },
       poster_path: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       backdrop_path: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       number_of_episodes: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       number_of_seasons: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       vote_average: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
       },
       vote_count: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       id_themoviedb: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
     });
   },
