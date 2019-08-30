@@ -1,19 +1,11 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
 import axios from 'axios';
-import cheerio from 'cheerio';
 import Anime from '../models/Anime';
 import Episodes from '../models/Episodes';
 import Season from '../models/Season';
-// https://www.animesgratisbr.com/naruto-classico-legendado/
 const keyThemovieDb = 'a90f0a1ea3df4d0b84213fc1170f6e81';
 const language = 'pt-br';
 
 class GenerateController {
-  async teste(req, res) {
-    // return '.mp4';
-  }
-
   async store(req, res) {
     const { id_anime } = req.body;
     const { url_crawler } = req.body;
@@ -55,7 +47,6 @@ class GenerateController {
         // SALVANDO TEMPORADAS
         const { seasons } = result.data;
         for (const obj of seasons) {
-          // await seasons.forEach(async obj => {
           if (obj.season_number === 0) continue;
           console.log(obj.season_number);
           const seasonExists = await Season.findOne({ where: { id: obj.id } });
@@ -83,43 +74,32 @@ class GenerateController {
             )
             .then(async epsAll => {
               const { episodes } = epsAll.data;
-
-              // eslint-disable-next-line no-restricted-syntax
               for (const eps of episodes) {
-                const url_crawlerTemp =
-                  eps.episode_number > 9
-                    ? `${url_crawler}-${eps.episode_number}/`
-                    : `${url_crawler}-0${eps.episode_number}/`;
-                // eslint-disable-next-line no-await-in-loop
-
                 const epExists = await Episodes.findOne({
                   where: { id: eps.id },
                 });
                 if (!epExists) {
-                  await axios.get(url_crawlerTemp).then(async resultCrawler => {
-                    console.log(url_crawlerTemp);
-                    const $ = await cheerio.load(resultCrawler.data);
-                    await Episodes.create({
-                      id: eps.id,
-                      air_date: eps.air_date,
-                      episode_number: eps.episode_number,
-                      name: eps.name,
-                      overview: eps.overview,
-                      season_number: eps.season_number,
-                      still_path: eps.still_path,
-                      vote_average: eps.vote_average,
-                      vote_count: eps.vote_count,
-                      id_themoviedb: id_anime,
-                      url: (await $('source')[0])
-                        ? await $('source')[0].attribs.src
-                        : url_crawlerTemp,
+                  await Episodes.create({
+                    id: eps.id,
+                    air_date: eps.air_date,
+                    episode_number: eps.episode_number,
+                    name: eps.name,
+                    overview: eps.overview,
+                    season_number: eps.season_number,
+                    still_path: eps.still_path,
+                    vote_average: eps.vote_average,
+                    vote_count: eps.vote_count,
+                    id_themoviedb: id_anime,
+                    url:
+                      eps.episode_number > 9
+                        ? `${url_crawler}/${eps.episode_number}.mp4`
+                        : `${url_crawler}/0${eps.episode_number}.mp4`,
+                  })
+                    .then(() => {
+                      console.log(`salvou ep ${eps.episode_number}`);
+                      return true;
                     })
-                      .then(() => {
-                        console.log(`salvou ep ${eps.episode_number}`);
-                        return true;
-                      })
-                      .catch(err => console.error(err));
-                  });
+                    .catch(err => console.error(err));
                 } else {
                   console.log(`ep ${eps.episode_number} já existe`);
                 }
@@ -131,10 +111,6 @@ class GenerateController {
       })
       .catch(err => console.log('err', err));
     return res.status(200).json({ message: 'anime created' });
-  }
-
-  getUrl() {
-    return '.mp4';
   }
 }
 
