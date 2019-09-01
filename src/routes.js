@@ -15,7 +15,6 @@ routes.use(function(req, res, next) {
 routes.get('/', (req, res) => {
   return res.json({ message: 'Animeflix' });
 });
-routes.get('/teste', GenerateController.teste);
 
 routes.get('/anime', AnimeController.index);
 routes.get('/anime/:search', AnimeController.show);
