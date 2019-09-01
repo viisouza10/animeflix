@@ -6,11 +6,11 @@ import SeasonController from './app/controllers/SeasonController';
 import GenerateController from './app/controllers/GenerateController';
 
 const routes = new Router();
-routes.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// routes.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 routes.get('/', (req, res) => {
   return res.json({ message: 'Animeflix' });
