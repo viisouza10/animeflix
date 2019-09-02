@@ -9,6 +9,7 @@ class GenerateController {
   async store(req, res) {
     const { id_anime } = req.body;
     const { url_crawler } = req.body;
+    const { force } = req.body;
     await axios
       .get(
         `https://api.themoviedb.org/3/tv/${id_anime}?api_key=${keyThemovieDb}&language=${language}&include_image_language=${language}`
@@ -40,7 +41,7 @@ class GenerateController {
         });
         console.log(countEps);
         console.log(result.data.number_of_episodes);
-        if (countEps >= result.data.number_of_episodes) {
+        if (countEps >= result.data.number_of_episodes && !force) {
           return res.status(200).json({ message: 'anime all eps created' });
         }
 
