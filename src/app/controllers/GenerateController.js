@@ -2,6 +2,7 @@ import axios from 'axios';
 import Anime from '../models/Anime';
 import Episodes from '../models/Episodes';
 import Season from '../models/Season';
+import { toUnicode } from 'punycode';
 const keyThemovieDb = 'a90f0a1ea3df4d0b84213fc1170f6e81';
 const language = 'pt-br';
 
@@ -10,6 +11,13 @@ class GenerateController {
     const { id_anime } = req.body;
     const { url_crawler } = req.body;
     const { force } = req.body;
+    if(force){
+      // remove tudo
+      await Anime.destroy({ where: { id: id_anime } });
+      await Season.destroy({ where: { id_themoviedb: id_anime } });
+      await Episodes.destroy({ where: { id_themoviedb: id_anime } });
+    }
+
     await axios
       .get(
         `https://api.themoviedb.org/3/tv/${id_anime}?api_key=${keyThemovieDb}&language=${language}&include_image_language=${language}`
@@ -41,7 +49,7 @@ class GenerateController {
         });
         console.log(countEps);
         console.log(result.data.number_of_episodes);
-        if (countEps >= result.data.number_of_episodes && !force) {
+        if (countEps >= result.data.number_of_episodes) {
           return res.status(200).json({ message: 'anime all eps created' });
         }
 
@@ -51,7 +59,7 @@ class GenerateController {
           if (obj.season_number === 0) continue;
           console.log(obj.season_number);
           const seasonExists = await Season.findOne({ where: { id: obj.id } });
-          if (!seasonExists || force) {
+          if (!seasonExists) {
             await Season.create({
               id: obj.id,
               air_date: obj.air_date,
@@ -79,7 +87,7 @@ class GenerateController {
                 const epExists = await Episodes.findOne({
                   where: { id: eps.id },
                 });
-                if (!epExists || force) {
+                if (!epExists) {
                   await Episodes.create({
                     id: eps.id,
                     air_date: eps.air_date,
