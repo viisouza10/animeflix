@@ -92,8 +92,8 @@ class GenerateController {
                     id_themoviedb: id_anime,
                     url:
                       eps.episode_number > 9
-                        ? `${url_crawler}/${eps.episode_number}.mp4`
-                        : `${url_crawler}/0${eps.episode_number}.mp4`,
+                        ? `${url_crawler}/${eps.episode_number}.MP4`
+                        : `${url_crawler}/0${eps.episode_number}.MP4`,
                   })
                     .then(() => {
                       console.log(`salvou ep ${eps.episode_number}`);
