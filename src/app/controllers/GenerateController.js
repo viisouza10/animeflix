@@ -51,7 +51,7 @@ class GenerateController {
           if (obj.season_number === 0) continue;
           console.log(obj.season_number);
           const seasonExists = await Season.findOne({ where: { id: obj.id } });
-          if (!seasonExists) {
+          if (!seasonExists && !force) {
             await Season.create({
               id: obj.id,
               air_date: obj.air_date,
@@ -79,7 +79,7 @@ class GenerateController {
                 const epExists = await Episodes.findOne({
                   where: { id: eps.id },
                 });
-                if (!epExists) {
+                if (!epExists && !force) {
                   await Episodes.create({
                     id: eps.id,
                     air_date: eps.air_date,
