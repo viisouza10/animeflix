@@ -4,6 +4,7 @@ import AnimeController from './app/controllers/AnimeController';
 import EpisodesController from './app/controllers/EpisodesController';
 import SeasonController from './app/controllers/SeasonController';
 import GenerateController from './app/controllers/GenerateController';
+import GenerateEPController from './app/controllers/GenerateEPController';
 
 const routes = new Router();
 // routes.use(function(req, res, next) {
@@ -30,5 +31,6 @@ routes.get(
 );
 
 routes.post('/generate', GenerateController.store);
+routes.post('/generateEps', GenerateEPController.store);
 
 export default routes;

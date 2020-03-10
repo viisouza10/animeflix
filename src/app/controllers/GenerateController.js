@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cheerio from 'cheerio';
 import Anime from '../models/Anime';
 import Episodes from '../models/Episodes';
 import Season from '../models/Season';
@@ -9,8 +10,8 @@ const language = 'pt-br';
 class GenerateController {
   async store(req, res) {
     const { id_anime } = req.body;
-    const { url_crawler } = req.body;
     const { force } = req.body;
+
     if(force){
       // remove tudo
       await Anime.destroy({ where: { id: id_anime } });
@@ -98,11 +99,7 @@ class GenerateController {
                     still_path: eps.still_path,
                     vote_average: eps.vote_average,
                     vote_count: eps.vote_count,
-                    id_themoviedb: id_anime,
-                    url:
-                      eps.episode_number > 9
-                        ? `${url_crawler}/${eps.episode_number}.MP4`
-                        : `${url_crawler}/0${eps.episode_number}.MP4`,
+                    id_themoviedb: id_anime
                   })
                     .then(() => {
                       console.log(`salvou ep ${eps.episode_number}`);
